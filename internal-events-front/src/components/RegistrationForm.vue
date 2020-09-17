@@ -4,9 +4,8 @@
       <v-flex class="mb-4">
         <h1 class="display-1 font-weight-bold mb-3">{{ titles.formTitle }}</h1>
 
-        <!--Form to create an user account-->
+        <!--Form to create a user account-->
         <v-form ref="form" v-model="valid" id="form">
-          <v-container>
             <v-text-field
               v-model="User.username"
               :rules="usernameRules"
@@ -30,6 +29,13 @@
             ></v-text-field>
 
             <v-text-field
+              v-model="User.email"
+              :rules="emailRules"
+              label="Email"
+              required
+            ></v-text-field>
+
+            <v-text-field
               v-model="User.password"
               :rules="passwordRules"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -49,8 +55,6 @@
                 @click.prevent="createAccount"
               >{{ titles.buttonTitle }}</v-btn>
             </v-card-actions>
-            
-          </v-container>
         </v-form>
       </v-flex>
     </v-row>
@@ -77,6 +81,7 @@ export default {
       username: "",
       firstname:"",
       lastname:"",
+      email:"",
       password: ""
     },
     valid: true,
@@ -84,21 +89,28 @@ export default {
     usernameRules: [
       value => !!value || "Veuillez saisir votre identifiant.",
       value => {
-        const pattern = /^[GL00X]+(\d){7}$/;
+        const pattern = /^[G][L]0{2}(\d){7}$/;
         return pattern.test(value) || "Identifiant invalide."; 
       }
     ],
     firstnameRules: [
       value => !!value || "Veuillez saisir votre prénom.",
       value => {
-        const pattern = /^(?=.*[a-z])(?=.*[A-Z].{2,100})/;
+        const pattern = /^([a-zâäàéèùêëîïôöçñ .'-]{2,100})$/i;
         return pattern.test(value) || "Saisie invalide."; 
       }
     ],
     lastnameRules: [
       value => !!value || "Veuillez saisir votre nom.",
       value => {
-        const pattern = /^(?=.*[a-z])(?=.*[A-Z].{2,100})/;
+        const pattern = /^([a-zâäàéèùêëîïôöçñ .'-]{2,100})$/i;
+        return pattern.test(value) || "Saisie invalide."; 
+      }
+    ],
+    emailRules: [
+      value => !!value || "Veuillez saisir votre email.",
+      value => {
+        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return pattern.test(value) || "Saisie invalide."; 
       }
     ],
@@ -118,13 +130,16 @@ export default {
         username: this.User.username,
         firstname: this.User.firstname,
         lastname: this.User.lastname,
+        email: this.User.email,
         password: this.User.password
       };
-      console.log(newUser);
       
-      axios.post("http://localhost:8085/events/add", newUser).then(
-        response => {
-          console.log(response);
+      axios.post("http://localhost:8085/users", newUser)
+      .then(response => {
+        const status = response.request.status;
+        if (status == 201) {
+          this.$router.push('login')
+        }
         },
         error => {
           console.log(error);
