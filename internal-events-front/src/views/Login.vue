@@ -1,24 +1,28 @@
 <template>
   <div class="login">
-        <RegistrationForm :titles="titles"/>
+        <my-header></my-header>
+        <LoginPage :titles="titles"/>
         
   </div>
 </template>
 
 <script>
 
-import RegistrationForm from '@/components/RegistrationForm.vue'
+import Header from '@/components/Header.vue'
+import LoginPage from '@/components/LoginPage.vue'
 
 export default {
   name: 'Login',
   components: {
-    RegistrationForm
+    'my-header': Header,
+    LoginPage
   },
   data(){
     return {
       titles:{
         formTitle:"Se connecter",
-        buttonTitle: "Login"
+        buttonTitle: "OK",
+        buttonCancel: "Cancel"
       }
     }
   }
