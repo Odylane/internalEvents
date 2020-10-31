@@ -6,55 +6,56 @@
 
         <!--Form to create a user account-->
         <v-form ref="form" v-model="valid" id="form">
-            <v-text-field
-              v-model="User.username"
-              :rules="usernameRules"
-              label="Identifiant"
-              placeholder="matricule RH GL00xxxxxxx"
-              required
-            ></v-text-field>
+          <v-text-field
+            v-model="Employee.username"
+            :rules="usernameRules"
+            label="Identifiant"
+            placeholder="matricule RH GL00xxxxxxx"
+            required
+          ></v-text-field>
 
-            <v-text-field
-              v-model="User.firstname"
-              :rules="firstnameRules"
-              label="Prénom"
-              required
-            ></v-text-field>
+          <v-text-field
+            v-model="Employee.firstname"
+            :rules="firstnameRules"
+            label="Prénom"
+            required
+          ></v-text-field>
 
-            <v-text-field
-              v-model="User.lastname"
-              :rules="lastnameRules"
-              label="Nom"
-              required
-            ></v-text-field>
+          <v-text-field
+            v-model="Employee.lastname"
+            :rules="lastnameRules"
+            label="Nom"
+            required
+          ></v-text-field>
 
-            <v-text-field
-              v-model="User.email"
-              :rules="emailRules"
-              label="Email"
-              required
-            ></v-text-field>
+          <v-text-field
+            v-model="Employee.email"
+            :rules="emailRules"
+            label="Email"
+            required
+          ></v-text-field>
 
-            <v-text-field
-              v-model="User.password"
-              :rules="passwordRules"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="show1 ? 'text' : 'password'"
-              label="Mot de passe"
-              prepend-inner-icon="mdi-lock"
-              @click:append="show1 = !show1"
-              required
-            ></v-text-field>
+          <v-text-field
+            v-model="Employee.password"
+            :rules="passwordRules"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="show1 ? 'text' : 'password'"
+            label="Mot de passe"
+            prepend-inner-icon="mdi-lock"
+            @click:append="show1 = !show1"
+            required
+          ></v-text-field>
 
-            <!--Button submit calls method "createAccount"-->
-            <v-card-actions class="d-flex justify-end">
-              <v-btn
-                class="white--text"
-                :disabled="!valid"
-                color="success"
-                @click.prevent="createAccount"
-              >{{ titles.buttonTitle }}</v-btn>
-            </v-card-actions>
+          <!--Button calls method "createAccount"-->
+          <v-card-actions class="d-flex justify-end">
+            <v-btn
+              class="white--text"
+              :disabled="!valid"
+              color="success"
+              @click.prevent="createAccount"
+              >{{ titles.buttonTitle }}</v-btn
+            >
+          </v-card-actions>
         </v-form>
       </v-flex>
     </v-row>
@@ -69,87 +70,86 @@ export default {
   props: {
     titles: {
       type: Object,
-      default: ()=>({
-        formTitle:"",
-        buttonTitle:""
-      })
-    }
+      default: () => ({
+        formTitle: "",
+        buttonTitle: "",
+      }),
+    },
   },
   //Link the form's fields to the data of the component
   data: () => ({
-    User: {
+    Employee: {
       username: "",
-      firstname:"",
-      lastname:"",
-      email:"",
-      password: ""
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
     },
     valid: true,
     show1: false,
     usernameRules: [
-      value => !!value || "Veuillez saisir votre identifiant.",
-      value => {
+      (value) => !!value || "Veuillez saisir votre identifiant.",
+      (value) => {
         const pattern = /^[G][L]0{2}(\d){7}$/;
-        return pattern.test(value) || "Identifiant invalide."; 
-      }
+        return pattern.test(value) || "Identifiant invalide.";
+      },
     ],
     firstnameRules: [
-      value => !!value || "Veuillez saisir votre prénom.",
-      value => {
+      (value) => !!value || "Veuillez saisir votre prénom.",
+      (value) => {
         const pattern = /^([a-zâäàéèùêëîïôöçñ .'-]{2,100})$/i;
-        return pattern.test(value) || "Saisie invalide."; 
-      }
+        return pattern.test(value) || "Saisie invalide.";
+      },
     ],
     lastnameRules: [
-      value => !!value || "Veuillez saisir votre nom.",
-      value => {
+      (value) => !!value || "Veuillez saisir votre nom.",
+      (value) => {
         const pattern = /^([a-zâäàéèùêëîïôöçñ .'-]{2,100})$/i;
-        return pattern.test(value) || "Saisie invalide."; 
-      }
+        return pattern.test(value) || "Saisie invalide.";
+      },
     ],
     emailRules: [
-      value => !!value || "Veuillez saisir votre email.",
-      value => {
+      (value) => !!value || "Veuillez saisir votre email.",
+      (value) => {
         const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return pattern.test(value) || "Saisie invalide."; 
-      }
+        return pattern.test(value) || "Saisie invalide.";
+      },
     ],
     passwordRules: [
-      value => !!value || "Veuillez renseigner ce champ.",
-      value => {
+      (value) => !!value || "Veuillez renseigner ce champ.",
+      (value) => {
         const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@§;#$%?/,^&*]).{8,12}$/;
         return pattern.test(value) || "Mot de passe invalide.";
-      }
-    ]
-    
+      },
+    ],
   }),
-  //Submit the form 
+  //Submit the form
   methods: {
     createAccount() {
       let newUser = {
-        username: this.User.username,
-        firstname: this.User.firstname,
-        lastname: this.User.lastname,
-        email: this.User.email,
-        password: this.User.password
+        username: this.Employee.username,
+        firstname: this.Employee.firstname,
+        lastname: this.Employee.lastname,
+        email: this.Employee.email,
+        password: this.Employee.password,
       };
-      
-      axios.post("http://localhost:8085/users", newUser)
-      .then(response => {
-        const status = response.request.status;
-        if (status == 201) {
-          this.$router.push('login')
-        }
+
+      axios.post("http://localhost:8085/api/employees", newUser).then(
+        (response) => {
+          const status = response.request.status;
+          if (status == 201) {
+            this.$router.push("login");
+          }
         },
-        error => {
+        (error) => {
           console.log(error);
         }
       );
-    }
-  }
+    },
+  },
 };
 </script>
-<!-- "scoped", style only for this component--> 
+<!-- "scoped", style only for this component-->
 <style lang="scss" scoped>
 #registration {
   margin-top: 30px;
