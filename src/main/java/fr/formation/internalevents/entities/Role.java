@@ -1,46 +1,57 @@
-package fr.formation.internalevents.business;
+package fr.formation.internalevents.entities;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="roles")
 public class Role {
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id_role")
 	private Long id;
 	
-	@Column(nullable=false,length=255,unique=true)
-	private String code;
+	@Column(length= 25, nullable=false, unique=true)
+	private String name;
 	
-	@Column(nullable=false)
+	@Convert(converter = BooleanConverter.class)
+    @Column(length = 1, nullable=false)
 	private boolean defaultRole;
+
+	protected Role() {
+		// Empty no-arg constructor for JPA
+	}
+
+	public Role(String name) {
+		setName(name);
+	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public String getName() {
+		return name;
 	}
 
-	public String getCode() {
-		return code;
+	private void setName(String name) {
+	this.name = name;
+		
 	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
+	
 	public boolean isDefaultRole() {
 		return defaultRole;
 	}
-
-	public void setDefaultRole(boolean defaultRole) {
-		this.defaultRole = defaultRole;
-	}
-
+	
+	@Override
+    public String toString() {
+	return "{id=" + id + ", role=" + name + ", defaultRole=" + defaultRole +"}";
+    }	
 }

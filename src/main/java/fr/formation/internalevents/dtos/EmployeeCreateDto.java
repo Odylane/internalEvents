@@ -5,7 +5,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
-public class UserCreateDto {
+public class EmployeeCreateDto {
 	
 	@NotBlank
 	@Size(max=11)
@@ -32,7 +32,7 @@ public class UserCreateDto {
 	private String password;
 	
 	
-	public UserCreateDto() {
+	public EmployeeCreateDto() {
 		//
 	}
 		
