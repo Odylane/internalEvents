@@ -22,9 +22,7 @@ public class EmployeeDetails extends User {
 	 private Long id;
 
 	    public EmployeeDetails(EmployeeAuthDto user) {
-		super(user.getUsername(), user.getPassword(), user.isEnabled(),
-			user.isAccountNonExpired(), user.isCredentialsNonExpired(),
-			user.isAccountNonLocked(), buildAuthorities(user.getRoles()));
+		super(user.getUsername(), user.getPassword(), buildAuthorities(user.getRoles()));
 		id = user.getId();
 	    }
 
@@ -40,11 +38,7 @@ public class EmployeeDetails extends User {
 	    @Override
 	    public String toString() {
 		return "{id=" + id + ", authorities=" + getAuthorities()
-			+ ", password=[PROTECTED], username=" + getUsername()
-			+ ", enabled=" + isEnabled() + ", accountNonExpired="
-			+ isAccountNonExpired() + ", accountNonLocked="
-			+ isAccountNonLocked() + ", credentialsNonExpired="
-			+ isCredentialsNonExpired() + "}";
+			+ ", password=[PROTECTED], username=" + getUsername() + "}";
 	    }
 
 }

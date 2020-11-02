@@ -3,7 +3,6 @@ package fr.formation.internalevents.entities;
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -45,22 +44,6 @@ public class Employee {
 	inverseJoinColumns = @JoinColumn(name= "id_role", referencedColumnName = "id_role"))
 	private Set<Role> roles;
 	
-	@Convert(converter = BooleanConverter.class)
-	@Column(length=1, nullable=false)
-	private boolean enabled=true;
-	
-	@Convert(converter = BooleanConverter.class)
-	@Column(length = 1, nullable = false)
-	private boolean accountNonExpired;
-
-	@Convert(converter = BooleanConverter.class)
-	@Column(length = 1, nullable = false)
-	private boolean accountNonLocked;
-
-	@Convert(converter = BooleanConverter.class)
-	@Column(length = 1, nullable = false)
-	private boolean credentialsNonExpired;
-
 	public Employee() {
 		//
 	}
@@ -71,13 +54,11 @@ public class Employee {
      * @param password an encrypted password
      * @param username a unique username
      * @param roles    some roles
-     * @param enabled  {@code true} if enabled; {@code false} otherwise
      */
-	public Employee(String username, String password, Set<Role> roles, boolean enabled) {
+	public Employee(String username, String password, Set<Role> roles) {
 		this.username = username;
 		this.password = password;
-		this.roles = roles;
-		this.enabled = enabled;		
+		this.roles = roles;	
 	}
 
 	public Long getId() {
@@ -108,22 +89,6 @@ public class Employee {
 		return roles;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
-	}
-	
-	 public boolean isAccountNonExpired() {
-		return accountNonExpired;
-	}
-
-	public boolean isAccountNonLocked() {
-		return accountNonLocked;
-	}
-
-	public boolean isCredentialsNonExpired() {
-		return credentialsNonExpired;
-	}
-	
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -152,12 +117,7 @@ public class Employee {
     public String toString() {
 	// password=[PROTECTED] for not displaying in logs
 	return "{id=" + id + ", username=" + username
-		+ ", password=[PROTECTED], roles=" + roles + ", enabled="
-		+ enabled + ", accountNonExpired=" + accountNonExpired
-		+ ", accountNonLocked=" + accountNonLocked
-		+ ", credentialsNonExpired=" + credentialsNonExpired
-		+ ", firstname=" + firstname + ", lastname=" + lastname
-		+ ", email=" + email +", role=" + roles + "}";
+		+ ", password=[PROTECTED], roles=" + roles + ", role=" + roles + "}";
     }
 
 }

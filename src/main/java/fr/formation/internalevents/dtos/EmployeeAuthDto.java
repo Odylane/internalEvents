@@ -16,13 +16,5 @@ public interface EmployeeAuthDto {
 	String getPassword();
 	
 	Set<Role> getRoles();
-	
-	boolean isEnabled();
-
-    boolean isAccountNonExpired();
-
-    boolean isAccountNonLocked();
-
-    boolean isCredentialsNonExpired();
     
 }

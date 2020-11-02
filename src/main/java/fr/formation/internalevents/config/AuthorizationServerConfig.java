@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.formation.internalevents.dtos.EmployeeInfoDto;
-import fr.formation.internalevents.services.EmployeeDetailsService;
+import fr.formation.internalevents.services.EmployeeService;
 
 @Configuration
 @EnableAuthorizationServer
@@ -54,20 +55,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     // Employee details service to authenticate employees with username and
     // password from the database
-    private final EmployeeDetailsService userDetailsService;
+    private final EmployeeService employeeService;
 
     // Custom token converter to store custom info within access token
     private final CustomAccessTokenConverter customAccessTokenConverter;
 
     protected AuthorizationServerConfig(
 	    AuthenticationManager authenticationManagerBean,
-	    EmployeeDetailsService userDetailsService,
+	    @Lazy EmployeeService employeeService,
 	    CustomAccessTokenConverter customAccessTokenConverter) {
 	authenticationManager = authenticationManagerBean;
-	this.userDetailsService = userDetailsService;
+	this.employeeService = employeeService;
 	this.customAccessTokenConverter = customAccessTokenConverter;
     }
-
+    
     /**
      * Token service using random UUID values for the access token and refresh
      * token values. Specifies the token store and enables the refresh token.
@@ -104,7 +105,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		Arrays.asList(tokenEnhancer(), accessTokenConverter()));
 	configurer.tokenStore(tokenStore()).tokenEnhancer(tokenEnhancerChain)
 		.authenticationManager(authenticationManager)
-		.userDetailsService(userDetailsService);
+		.userDetailsService(employeeService);
     }
 
     /**
@@ -145,7 +146,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients)
 	    throws Exception {
-	clients.inMemory().withClient("my-client-app")
+	clients.inMemory().withClient("my-ievents-app")
 		.secret(passwordEncoder().encode("")).scopes("trusted")
 		.authorizedGrantTypes("password", "refresh_token")
 		.accessTokenValiditySeconds(accessTokenValiditySeconds)
@@ -173,7 +174,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @GetMapping("/userInfo")
     public EmployeeInfoDto userInfo() {
 	Long userId = SecurityHelper.getUserId();
-	return userDetailsService.getCurrentEmployeeInfo(userId);
+	return employeeService.getCurrentEmployeeInfo(userId);
     }	
 	
 	

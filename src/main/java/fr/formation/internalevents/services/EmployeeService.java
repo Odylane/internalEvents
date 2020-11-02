@@ -1,9 +1,14 @@
 package fr.formation.internalevents.services;
 
-import fr.formation.internalevents.dtos.EmployeeCreateDto;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface EmployeeService {
+import fr.formation.internalevents.dtos.EmployeeCreateDto;
+import fr.formation.internalevents.dtos.EmployeeInfoDto;
+
+public interface EmployeeService extends UserDetailsService {
 	
 	void create(EmployeeCreateDto dto);
+	
+	EmployeeInfoDto getCurrentEmployeeInfo(Long id);
 		
 }
