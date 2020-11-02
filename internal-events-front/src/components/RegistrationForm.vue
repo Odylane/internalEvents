@@ -134,7 +134,7 @@ export default {
         password: this.Employee.password,
       };
 
-      axios.post("http://localhost:8085/api/employees", newUser).then(
+      axios.post("http://localhost:8085/api/register", newUser).then(
         (response) => {
           const status = response.request.status;
           if (status == 201) {
