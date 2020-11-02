@@ -23,10 +23,8 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.formation.internalevents.dtos.EmployeeInfoDto;
 import fr.formation.internalevents.services.EmployeeService;
 
 @Configuration
@@ -163,20 +161,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	return new BCryptPasswordEncoder();
     }
 
-    /**
-     * Standard endpoint returning a view of the current authenticated user.
-     * <p>
-     * Could be in a "user controller".
-     *
-     * @param authentication injected authentication object
-     * @return a view of the current authenticated user
-     */
-    @GetMapping("/userInfo")
-    public EmployeeInfoDto userInfo() {
-	Long userId = SecurityHelper.getUserId();
-	return employeeService.getCurrentEmployeeInfo(userId);
-    }	
-	
-	
 
 }

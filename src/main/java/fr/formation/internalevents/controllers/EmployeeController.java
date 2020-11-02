@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.formation.internalevents.config.SecurityHelper;
 import fr.formation.internalevents.dtos.EmployeeCreateDto;
+import fr.formation.internalevents.dtos.EmployeeInfoDto;
 import fr.formation.internalevents.services.EmployeeService;
 
 
@@ -31,15 +33,31 @@ public class EmployeeController {
 		service.create(inputs);
 	}
 	
+    /**
+     * Standard endpoint returning a view of the current authenticated user.
+     * <p>
+     * Could be in the "AuthorizationServerConfig.java".
+     *
+     * @param authentication injected authentication object
+     * @return a view of the current authenticated user
+     */
+    
+	@GetMapping("/userInfo")
+    public EmployeeInfoDto userInfo() {
+	Long userId = SecurityHelper.getUserId();
+	return service.getCurrentEmployeeInfo(userId);
+    }	
+	
 	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/user")
 	public String user() {
 		return "Hello user!";
 	}
 	
-    @GetMapping("/authenticated")
+    @GetMapping("/private/authenticated")
     public String secured() {
 	return "Hello authenticated user!";
     }
+    
     
 }
