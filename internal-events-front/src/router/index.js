@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
-import EventsPage from '@/views/Events.vue'
+import EventsList from '@/views/Events.vue'
 
 // means Vue uses the router
 Vue.use(VueRouter)
@@ -20,8 +20,8 @@ const routes = [
   },
   {
     path: '/events',
-    name: 'EventsPage',
-    component: EventsPage
+    name: 'events',
+    component: EventsList
   }
 ]
 
