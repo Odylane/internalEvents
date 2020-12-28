@@ -2,11 +2,10 @@
   <v-container id="login">
     <v-row class="text-center">
       <v-flex class="mb-4">
-        <h1 class="display-1 font-weight-bold mb-3">{{ titles.formTitle }}</h1>
+        <h1 class="display-1 font-weight-bold mb-3">Se connecter</h1>
 
         <!--Form to log a user-->
         <v-form ref="form" v-model="valid" id="form">
-          <v-container>
             <v-text-field
               v-model="username"
               :rules="usernameRules"
@@ -35,11 +34,9 @@
                 :disabled="!valid"
                 color="success"
                 @click.prevent="login"
-              >{{ titles.buttonTitle }}</v-btn>
+              >OK</v-btn>
             </v-card-actions>
             </div>
-            
-          </v-container>
         </v-form>
       </v-flex>
     </v-row>
@@ -47,24 +44,16 @@
 </template>
 
 <script>
+
 import axios from "axios";
 
 export default {
   name: "LoginPage",
-  props: {
-    titles: {
-      type: Object,
-      default: ()=>({
-        formTitle:"",
-        buttonTitle:""
-      })
-    }
-  },
   //Link the form's fields to the data of the component
   data: () => ({
     username: "",
     password: "",
-    valid: true,
+    valid: false,
     show1: false,
     usernameRules: [
       value => !!value || "Veuillez saisir votre identifiant.",
@@ -92,15 +81,18 @@ export default {
 
     axios.post("http://localhost:8085/oauth/token", form)
       .then((response) => {
+          console.log(response);
           const status = response.request.status;
           if (status == 200) {
-            this.$router.push("events");
+            this.$router.push('events');
           }
+          localStorage.setItem('access_token', response.data.acces_token);
         },
         (error) => {
           console.log(error);
         }
       );
+      
     }
   }
   }
