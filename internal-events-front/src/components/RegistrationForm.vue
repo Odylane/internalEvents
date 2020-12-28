@@ -1,8 +1,9 @@
 <template>
   <v-container id="registration">
+    <my-header></my-header>
     <v-row class="text-center">
       <v-flex class="mb-4">
-        <h1 class="display-1 font-weight-bold mb-3">{{ titles.formTitle }}</h1>
+        <h1 class="display-1 font-weight-bold mb-3">Créer un compte</h1>
 
         <!--Form to create a user account-->
         <v-form ref="form" v-model="valid" id="form">
@@ -53,7 +54,7 @@
               :disabled="!valid"
               color="success"
               @click.prevent="createAccount"
-              >{{ titles.buttonTitle }}</v-btn
+              >OK</v-btn
             >
           </v-card-actions>
         </v-form>
@@ -63,18 +64,13 @@
 </template>
 
 <script>
-import axios from "axios";
+import http from "../http-common";
+import Header from './Header.vue';
 
 export default {
   name: "RegistrationForm",
-  props: {
-    titles: {
-      type: Object,
-      default: () => ({
-        formTitle: "",
-        buttonTitle: "",
-      }),
-    },
+  components: {
+    "my-header" : Header,
   },
   //Link the form's fields to the data of the component
   data: () => ({
@@ -85,7 +81,7 @@ export default {
       email: "",
       password: "",
     },
-    valid: true,
+    valid: false,
     show1: false,
     usernameRules: [
       (value) => !!value || "Veuillez saisir votre identifiant.",
@@ -134,11 +130,11 @@ export default {
         password: this.Employee.password,
       };
 
-      axios.post("http://localhost:8085/api/employees", newUser).then(
+      http.post("/employees", newUser).then(
         (response) => {
           const status = response.request.status;
           if (status == 201) {
-            this.$router.push("login");
+            this.$router.push("events");
           }
         },
         (error) => {
