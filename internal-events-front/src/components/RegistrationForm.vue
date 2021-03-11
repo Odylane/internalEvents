@@ -1,15 +1,15 @@
 <template>
-  <v-container id="registration">
-    <v-row class="text-center">
+  <v-container class="registration">
+    <v-row>
       <v-flex class="mb-4">
-        <h1 class="display-1 font-weight-bold mb-3">{{ titles.formTitle }}</h1>
+        <h1 class="display-1 font-weight-bold mb-15 text-center">Créer un compte</h1>
 
         <!--Form to create a user account-->
         <v-form ref="form" v-model="valid" id="form">
           <v-text-field
             v-model="Employee.username"
             :rules="usernameRules"
-            label="Identifiant"
+            label="Identifiant*"
             placeholder="matricule RH GL00xxxxxxx"
             required
           ></v-text-field>
@@ -17,21 +17,21 @@
           <v-text-field
             v-model="Employee.firstname"
             :rules="firstnameRules"
-            label="Prénom"
+            label="Prénom*"
             required
           ></v-text-field>
 
           <v-text-field
             v-model="Employee.lastname"
             :rules="lastnameRules"
-            label="Nom"
+            label="Nom*"
             required
           ></v-text-field>
 
           <v-text-field
             v-model="Employee.email"
             :rules="emailRules"
-            label="Email"
+            label="Email*"
             required
           ></v-text-field>
 
@@ -40,11 +40,14 @@
             :rules="passwordRules"
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             :type="show1 ? 'text' : 'password'"
-            label="Mot de passe"
+            label="Mot de passe*"
             prepend-inner-icon="mdi-lock"
             @click:append="show1 = !show1"
+            hint="Le mot de passe doit contenir entre 8 et 12 caractères et au moins une majuscule, une minuscule, un chiffre, un caractère spécial"
             required
           ></v-text-field>
+
+          <small>*Champs obligatoires</small>
 
           <!--Button calls method "createAccount"-->
           <v-card-actions class="d-flex justify-end">
@@ -53,7 +56,7 @@
               :disabled="!valid"
               color="success"
               @click.prevent="createAccount"
-              >{{ titles.buttonTitle }}</v-btn
+              >OK</v-btn
             >
           </v-card-actions>
         </v-form>
@@ -67,15 +70,6 @@ import axios from "axios";
 
 export default {
   name: "RegistrationForm",
-  props: {
-    titles: {
-      type: Object,
-      default: () => ({
-        formTitle: "",
-        buttonTitle: "",
-      }),
-    },
-  },
   //Link the form's fields to the data of the component
   data: () => ({
     Employee: {
@@ -90,7 +84,7 @@ export default {
     usernameRules: [
       (value) => !!value || "Veuillez saisir votre identifiant.",
       (value) => {
-        const pattern = /^[G][L]0{2}(\d){7}$/;
+        const pattern = /^[G][L]0{2}\d{7}$/;
         return pattern.test(value) || "Identifiant invalide.";
       },
     ],
@@ -134,7 +128,7 @@ export default {
         password: this.Employee.password,
       };
 
-      axios.post("http://localhost:8085/api/employees", newUser).then(
+      axios.post("employees", newUser).then(
         (response) => {
           const status = response.request.status;
           if (status == 201) {
@@ -151,7 +145,7 @@ export default {
 </script>
 <!-- "scoped", style only for this component-->
 <style lang="scss" scoped>
-#registration {
+.registration {
   margin-top: 30px;
 }
 #form {
