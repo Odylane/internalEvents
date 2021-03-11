@@ -31,7 +31,7 @@
         <div>Organisateur(trice) : {{ info.employeeOrganizerFirstname }} {{ info.employeeOrganizerLastname }}</div><br/>
 
         <v-btn
-          ><router-link to="/events"
+          ><router-link to="/events" tag="ul"
             >Retour à la liste des événements</router-link
           ></v-btn
         >
@@ -67,7 +67,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:8085/api/events/" + this.eventId)
+      .get("events/" + this.eventId)
       .then((response) => this.info = response.data);
   },
 };

@@ -1,24 +1,21 @@
 <template>
-  <div class="login">
-    <my-header></my-header>
-    <EventsList/>
-  </div>
+  <v-container>
+    <v-row justify="center">
+      <h1>Evénements internes</h1>
+
+      <EventsList />
+
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
 import EventsList from "@/components/EventsList.vue";
 
 export default {
   name: "Events",
   components: {
-    "my-header": Header,
     EventsList,
-  },
-  data() {
-    return {
-      //
-    };
   },
 };
 </script>
