@@ -1,4 +1,4 @@
-import EventDataService from "../../services/EventDataService";
+import jwtInterceptor from "@/jwtInterceptor";
 
 const state = {
   events: [],
@@ -12,9 +12,8 @@ const mutations = {
 
 const actions = {
   getEvents({ commit }) {
-    // axios
-    //   .get("http://localhost:8085/api/events")
-    EventDataService.getAll()
+    jwtInterceptor
+      .get("http://localhost:8085/api/events")
       .then(({ data }) => commit("SET_EVENTS", data))
       .catch((error) => console.log(error));
   },
